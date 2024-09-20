@@ -25,8 +25,6 @@ target_include_directories(Venus PRIVATE ${CMAKE_SOURCE_DIR}/Venus/src/core)
 #set output directories for packaged program
 set_target_properties(Venus PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
-        LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
-        ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
 )
 
 #set RPATH to install path (this is the runtime path)

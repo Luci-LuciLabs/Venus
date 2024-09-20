@@ -28,9 +28,7 @@ target_include_directories(Venus_Engine PRIVATE ${GLFW_INCLUDE_DIRS})
 
 #set output directories for packaged program
 set_target_properties(Venus_Engine PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
         LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
-        ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
 )
 
 #set RPATH to install path (this is the runtime path)
