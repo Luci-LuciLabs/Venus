@@ -19,4 +19,5 @@ namespace venusCore{
     private:
       windowCore window_core{WIDTH, HEIGHT, "Luci so fuhg N KEWLSIES FWFW AYAYAYAYAYAYAYAYA >:3"};
   };  
+  appCore* buildApp();
 }

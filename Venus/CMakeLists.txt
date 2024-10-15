@@ -22,7 +22,7 @@ target_sources(Venus_Engine PRIVATE ${ENGINE_SOURCES})
 target_include_directories(Venus_Engine PUBLIC ${CORE_DIR})
 
 #find and link glfw
-find_package(glfw3 REQUIRED)
+add_subdirectory(externLibs/glfw)
 target_link_libraries(Venus_Engine PRIVATE glfw)
 target_include_directories(Venus_Engine PRIVATE ${GLFW_INCLUDE_DIRS})
 

@@ -11,7 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #add engine subdir
 #add sandbox subdir
 add_subdirectory(Venus)
-add_subdirectory(Venus-Sandbox)
+add_subdirectory(Venus-Client)
 
 #set install dir for full package
 set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install")
