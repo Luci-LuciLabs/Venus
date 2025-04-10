@@ -6,7 +6,9 @@
 namespace venus_mantle{
     
     app_mantle::app_mantle(){};
-    app_mantle::~app_mantle(){};
+    app_mantle::~app_mantle(){
+        std::cout << "app destroyed." << '\n';
+    };
 
     void app_mantle::run(void){
         std::cout << "running Venus..." << '\n';
@@ -15,6 +17,7 @@ namespace venus_mantle{
             glfwPollEvents();
         }
         
+        std::cout << "stopping Venus..." << '\n';
     }
 
 } // namespace venus_mantle

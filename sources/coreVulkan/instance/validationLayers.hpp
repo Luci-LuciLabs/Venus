@@ -1,9 +1,12 @@
 #include "../volk/volk.h"
 
+// These function are default-bare-minimum implementations of vulkan validation layer terminal logging.
+// when NDEBUG is defined they are not used.
+// when DEBUG is defined they are used to output vulkan warning/error reporting.
 
 namespace venus_core{
     namespace instanceLayers{
-    
+        
         bool checkValidationLayerSupport(void);
 
         void setupDebugMessenger(VkInstance &instance, VkDebugUtilsMessengerEXT &debugMessenger);

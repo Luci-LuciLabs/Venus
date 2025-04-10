@@ -3,6 +3,10 @@
 #include "validationLayers.hpp"
 #include "glfwExtensions.hpp"
 
+
+#define VK_NO_PROTOTYPES
+#include "../volk/volk.h"
+#include <GLFW/glfw3.h>
 // stdlib
 #include <stdexcept>
 #include <vector>
@@ -11,6 +15,10 @@
 namespace venus_core{
 
     instance_core::instance_core(){
+
+        if(glfwInit() != GLFW_TRUE){
+            throw std::runtime_error("FAILED TO INTILIALIZE GLFW!!!");
+        }
 
         if(volkInitialize() != VK_SUCCESS){
             throw std::runtime_error("FAILED TO INITIALIZE VOLK LOADER!!!");
@@ -44,28 +52,31 @@ namespace venus_core{
             createInfo.ppEnabledLayerNames = nullptr;
         }
 
-        if(vkCreateInstance(&createInfo, nullptr, &member_Instance) != VK_SUCCESS){
+        if(vkCreateInstance(&createInfo, nullptr, &m_instance) != VK_SUCCESS){
             throw std::runtime_error("FAILED TO CREATE VULKAN INSTANCE!!!");
         }
 
-        volkLoadInstance(member_Instance);
+        volkLoadInstance(m_instance);
         
         std::cout << "instance created." << '\n';
 
-        instanceLayers::setupDebugMessenger(member_Instance, debugMessenger);
+        instanceLayers::setupDebugMessenger(m_instance, m_debugMessenger);
     };
 
     instance_core::~instance_core(){
 
         if(ENABLE_VALIDATION_LAYERS){
-            instanceLayers::destroyDebugUtilsMessengerEXT(member_Instance, debugMessenger, nullptr);
+            instanceLayers::destroyDebugUtilsMessengerEXT(m_instance, m_debugMessenger, nullptr);
         }
 
-        if(member_Instance != VK_NULL_HANDLE){
-            vkDestroyInstance(member_Instance, nullptr);
-            member_Instance = VK_NULL_HANDLE;
+        if(m_instance != VK_NULL_HANDLE){
+            vkDestroyInstance(m_instance, nullptr);
+            m_instance = VK_NULL_HANDLE;
         }
 
+        volkFinalize();
+        glfwTerminate();
+        
         std::cout << "instance destroyed." << '\n';
     };
 

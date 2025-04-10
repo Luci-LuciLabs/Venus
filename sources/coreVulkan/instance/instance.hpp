@@ -12,11 +12,13 @@ namespace venus_core{
 
             instance_core(const instance_core &) = delete;
             instance_core &operator=(const instance_core &) = delete;
+
+            VkInstance getInstance(void) const {return m_instance;}
         
         private:
 
-            VkInstance member_Instance = VK_NULL_HANDLE;
-            VkDebugUtilsMessengerEXT debugMessenger;
+            VkInstance m_instance = VK_NULL_HANDLE;
+            VkDebugUtilsMessengerEXT m_debugMessenger;
 
     };
 } // namespace venus_core

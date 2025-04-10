@@ -11,12 +11,15 @@ namespace venus_core{
     namespace instanceLayers{
       
         bool checkValidationLayerSupport(void){
+            // DO NOT CHANGE initial population of layers
             uint32_t layerCount = 0;
             vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
 
             std::vector<VkLayerProperties> availableLayers(layerCount);
             vkEnumerateInstanceLayerProperties(&layerCount, availableLayers.data());
 
+            // we define which layers we want to use within VALIDATION_LAYERS inside of instanceConfig.hpp
+            // we then can check for layer support, if changing layers then edit instanceConfig.hpp VALIDATION_LAYERS.
             for(const char* layerName : VALIDATION_LAYERS){
                 bool layerFound = false;
 
@@ -43,12 +46,12 @@ namespace venus_core{
             if(createDebugUtilsMessengerEXT(instance, &createInfo, nullptr, &debugMessenger)){
                 throw std::runtime_error("FAILED TO SETUP DEBUG MESSENGER!!!");
             }
-            
-            std::cout << "DEBUG MESSENGER CREATED :3 " << '\n';
+        
         }
 
         VkDebugUtilsMessengerCreateInfoEXT populateDebugMessengerCreateInfo(void){
-
+            // entirety of debugMessenger createInfo can be edited here.
+            // do not add any create info outside of this function.
             VkDebugUtilsMessengerCreateInfoEXT createInfo = {};
             createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
 
@@ -61,13 +64,17 @@ namespace venus_core{
                                         VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT |
                                         VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT);
                             
+            // DO NOT CHANGE!!!
+            // debugCallback MUST be called here.
+            // we do not use userData.
             createInfo.pfnUserCallback = debugCallback;
-
             createInfo.pUserData = nullptr;
-
             return createInfo;
         }
 
+        // ==========================================================================================================
+        // ALL FUNCTIONS BELOW THIS LINE SHOULD NOT BE CHANGED!!! THEY ARE INTEGRAL TO ALL VALIDATION LAYER OUTPUT!!!
+        // ==========================================================================================================
         static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
                                                             VkDebugUtilsMessageTypeFlagsEXT messageType,
                                                             const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData,
@@ -101,6 +108,8 @@ namespace venus_core{
                 if(func != nullptr){
                     func(instance, debugMessenger, pAllocator);
                 }
+
+                std::cout << "validation-messenger destroyed." << '\n';
             }
 
         

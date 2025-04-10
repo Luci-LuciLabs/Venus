@@ -4,6 +4,9 @@
 #include <stdexcept>
 #include <iostream>
 
+// This client implementation is intended purely for testing purposes during Venus development.
+// It is not representative of proper Venus use. Do not use this client as a reference to using Venus.
+
 int main(void){
     auto app = venus_mantle::buildApp();
 

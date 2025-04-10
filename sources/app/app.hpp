@@ -3,9 +3,10 @@
 
 #include "../coreVulkan/window/glfwWindow.hpp"
 #include "../coreVulkan/instance/instance.hpp"
+#include "../coreVulkan/device/device.hpp"
 
 // stdlib
-
+#include <memory>
 namespace venus_mantle{
     class app_mantle{
         public:
@@ -18,8 +19,10 @@ namespace venus_mantle{
             void run(void);
         private:
 
-            venus_core::window_core mantle_window;
             venus_core::instance_core mantle_instance;
+            venus_core::window_core mantle_window{mantle_instance};
+            venus_core::device_core mantle_device{mantle_instance, mantle_window};
+
     };
 
     app_mantle* buildApp(void){return new app_mantle();}

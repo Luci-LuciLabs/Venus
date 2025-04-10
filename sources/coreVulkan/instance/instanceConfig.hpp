@@ -12,7 +12,7 @@ namespace venus_core{
         inline static const bool ENABLE_VALIDATION_LAYERS = true;
     #endif
 
-    inline static std::vector<const char *> VALIDATION_LAYERS = {"VK_LAYER_KHRONOS_validation"};
+    inline static const std::vector<const char *> VALIDATION_LAYERS = {"VK_LAYER_KHRONOS_validation"};
 
 } // namespace venus_core
 
