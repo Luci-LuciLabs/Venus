@@ -1,0 +1,6 @@
+[submodule "source/renderSystem/.vendor/glfw"]
+	path = source/renderSystem/.vendor/glfw
+	url = https://github.com/glfw/glfw.git
+[submodule "source/renderSystem/.vendor/volk"]
+	path = source/renderSystem/.vendor/volk
+	url = https://github.com/zeux/volk.git
