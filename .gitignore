@@ -1,4 +1,4 @@
 .vscode/*
 .venus/*
 build/*
-docs/*
+documentation/doxygen/*
