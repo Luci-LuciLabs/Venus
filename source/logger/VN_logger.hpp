@@ -10,6 +10,7 @@
 // USAGE EX:
 // log_info("message", std::source_location::current());
 namespace venus::log {
+  void log_trace(std::string_view msg, const std::source_location &location);
 	void log_info(std::string_view msg, const std::source_location &location);
 	void log_debug(std::string_view msg, const std::source_location &location);
 	void log_warn(std::string_view msg, const std::source_location &location);
@@ -18,10 +19,12 @@ namespace venus::log {
 }  // namespace venus::log
 
 #ifdef NDEBUG
-	#define VN_LOG_INFO(msg) (void) 0
+	#define VN_LOG_TRACE(msg) (void) 0
+  #define VN_LOG_INFO(msg) (void) 0
 	#define VN_LOG_DEBUG(msg) (void) 0
 	#define VN_LOG_WARN(msg) (void) 0
 #else
+  #define VN_LOG_TRACE(msg) venus::log::log_trace(msg, std::source_location::current())
 	#define VN_LOG_INFO(msg) venus::log::log_info(msg, std::source_location::current())
 	#define VN_LOG_DEBUG(msg) venus::log::log_debug(msg, std::source_location::current())
 	#define VN_LOG_WARN(msg) venus::log::log_warn(msg, std::source_location::current())
