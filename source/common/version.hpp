@@ -1,0 +1,8 @@
+#ifndef VENUS_VERSION_HPP
+#define VENUS_VERSION_HPP
+
+#define VENUS_MAJOUR 1
+#define VENUS_MINOUR 0
+#define VENUS_PATCH 0
+
+#endif // VENUS_VERSION_HPP
