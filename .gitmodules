@@ -4,3 +4,6 @@
 [submodule "vendor/volk"]
 	path = vendor/volk
 	url = https://github.com/zeux/volk.git
+[submodule "vendor/quill"]
+	path = vendor/quill
+	url = https://github.com/odygrd/quill.git

@@ -1,0 +1,2 @@
+
+This directory is populated entirely with 3rd-party libraries, often as git submodules.
