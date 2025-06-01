@@ -1,4 +1,6 @@
 .vscode/*
 .venus/*
 build/*
-documentation/doxygen/*
+.documentation/*
+.dev/*
+resources/*
