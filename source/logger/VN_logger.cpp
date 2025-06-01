@@ -42,7 +42,7 @@ namespace venus::log {
 			}());
 
 			VN_LOGGER = quill::Frontend::create_or_get_logger("VN_LOGGER", {std::move(console_sink), std::move(json_sink)}, logPattern);
-
+      VN_LOGGER->set_immediate_flush(1);
 			// ifdef-else statement is within static lambda so it does not repeatedly set log-level to the same level every call.
 			// we are doing this since we have issues with using macros and compile-time-level-defines.
 			// we only want errors and criticals to be logged in release builds.
