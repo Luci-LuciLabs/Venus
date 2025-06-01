@@ -9,6 +9,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <cstring>
+#include <string>
 
 namespace venus {
 
@@ -24,11 +25,23 @@ namespace venus {
       (void)messageSeverity;
       (void)messageType;
       (void)pUserData;
-
-      std::cerr << "Validation Layer: " << pCallbackData->pMessage << '\n';
+      std::string callbackMessage = pCallbackData->pMessage;
+      std::string LAYER_MESSAGE = "Validations-Layer: " + callbackMessage + "\n";
+      
+      if(messageSeverity == VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT){
+        VN_LOG_DEBUG(LAYER_MESSAGE);
+      }else if(messageSeverity == VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT){
+        VN_LOG_WARN(LAYER_MESSAGE);
+      }else if(messageSeverity == VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT){
+        VN_LOG_ERROR(LAYER_MESSAGE);
+      }else{
+        VN_LOG_DEBUG(LAYER_MESSAGE);
+      }
+      
+      //std::cerr << "Validation Layer: " << pCallbackData->pMessage << '\n';
       return VK_FALSE;                                                  
   }
-
+    
 	VkResult createDebugUtilsMessengerEXT(VkInstance &instance, const VkDebugUtilsMessengerCreateInfoEXT *pCreateInfo,
 																				const VkAllocationCallbacks *pAllocator,
 																				VkDebugUtilsMessengerEXT *pDebugMessenger)
@@ -37,7 +50,7 @@ namespace venus {
       if(func != nullptr){
         return func(instance, pCreateInfo, pAllocator, pDebugMessenger);
       }else{
-        std::cerr << "Could not acquire vkCreateDebugUtilsMessengerEXT proc addr!\n"; 
+        VN_LOG_ERROR("Could not acquire vkCreateDebugUtilsMessengerEXT proc addr.");
         return VK_ERROR_EXTENSION_NOT_PRESENT;
       }
   }
@@ -49,12 +62,16 @@ namespace venus {
     if(func != nullptr){
       func(instance, debugMessenger, pAllocator);
     }
+    VN_LOG_INFO("Validations-Layer debugger has been destroyed.");
   }
 
 	// clang-format on
 
 	static void glfwErrorCallbackFunc(int error, const char *desc) {
-		std::cerr << "GLFW ERROR: " << error << " : " << desc << std::endl;
+    (void)error;
+    std::string err_desc = desc;
+    std::string message = "GLFW-ERROR: " + err_desc + "\n";
+		VN_LOG_ERROR(message);
 	}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -73,18 +90,37 @@ namespace venus {
 
     bool LAYERS_UNAVAILABLE = false;
 		if(ENABLE_VALIDATION_LAYERS && !checkValidationLayerSupport()) {
-      VN_LOG_ERROR("Validation layers requested but not available.");
-      VN_LOG_WARN("Will proceeed without validation layers.");
+      VN_LOG_WARN("Validation layers requested but not available, will continue without validation layers.");
       LAYERS_UNAVAILABLE = true;
 		}
+
+    uint32_t VULKAN_VERSION_FOUND;
+    if(vkEnumerateInstanceVersion(&VULKAN_VERSION_FOUND) != VK_SUCCESS){
+      VN_LOG_CRITICAL("Failed to find Vulkan.");
+      throw std::runtime_error("Failed to find Vulkan.");
+    }
+
+    uint32_t maj = VK_API_VERSION_MAJOR(VULKAN_VERSION_FOUND);
+    uint32_t min = VK_API_VERSION_MINOR(VULKAN_VERSION_FOUND);
+    uint32_t pat = VK_API_VERSION_PATCH(VULKAN_VERSION_FOUND);
+    std::string versionMessage = "Found Vulkan Version: " + std::to_string(maj) + "." + std::to_string(min) + "." + std::to_string(pat)  + '\n';
+    VN_LOG_INFO(versionMessage);
 
     VkApplicationInfo appInfo = {};
     appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
 
     // ENGINE DETAILS
-    appInfo.pEngineName = "Venus";
+    appInfo.pEngineName = "Vsadf";
     appInfo.engineVersion = VK_MAKE_VERSION(VENUS_MAJOUR, VENUS_MINOUR, VENUS_PATCH);
-    appInfo.apiVersion = VK_API_VERSION_1_4; // DO NOT CHANGE.
+    
+    if(VULKAN_VERSION_FOUND < VK_MAKE_VERSION(1, 4, 0)){
+      std::string warnVersion = "Vulkan Version 1.4 not found, using Version: " + std::to_string(maj) + "." + std::to_string(min) + '\n';
+      VN_LOG_WARN(warnVersion);
+      appInfo.apiVersion = VULKAN_VERSION_FOUND;
+    }else{
+      VN_LOG_INFO("Using preferred Vulkan Version: 1.4");
+      appInfo.apiVersion = VK_API_VERSION_1_4; // DO NOT CHANGE. Venus is intended to use vulkan_1.4.xxx
+    }
 
     // APP DETAILS
     appInfo.pApplicationName = m_details.name;
@@ -192,10 +228,11 @@ namespace venus {
 		debugCreateInfo.pUserData = nullptr;
 
 		if(createDebugUtilsMessengerEXT(instance, &debugCreateInfo, nullptr, &debugMessenger) != VK_SUCCESS) {
-			throw std::runtime_error("Failed to create debug utils messenger.");
+      VN_LOG_CRITICAL("Failed to create Validations-Layer-Debugger.");
+			throw std::runtime_error("Failed to create Validations-Layer-Debugger.");
 		}
 
-    std::cout << "Validations Layer messenger was created successfully.\n"; 
+    VN_LOG_INFO("Vulkan Layers are enabled, Validations-Layer-Debugger created.");
 	}
 
 
