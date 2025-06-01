@@ -11,7 +11,7 @@ option(BUILD_DEBUG "Builds in Debug mode." OFF)
 option(BUILD_RELEASE "Builds in Release mode." OFF)
 option(BUILD_CLIENT "Builds and links to V_client." OFF)
 option(DISABLE_FLAGS "Disables all compiler-flags regardless of build-type." OFF)
-option(SANITIZE_PROJECT "Enables -fsanitize=address across entire project." ON)
+option(SANITIZE_PROJECT "Enables -fsanitize=address across entire project." OFF)
 
 # this directory contains all cmake includes or files needing configuration by cmake
 set(cmake_helper_dir "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
@@ -35,6 +35,7 @@ set(common_dir "${source_dir}/common")
 set(window_dir "${source_dir}/window")
 set(instance_dir "${source_dir}/instance")
 set(application_dir "${source_dir}/application")
+set(device_dir "${source_dir}/devices")
 
 # !!! PROJECT RULES !!!
 ###########################################################################################
@@ -42,6 +43,7 @@ set(application_dir "${source_dir}/application")
 set(window_src "${window_dir}/window.cpp")
 set(instance_src "${instance_dir}/instance.cpp")
 set(application_src "${application_dir}/application.cpp")
+set(physicalDevice_src "${device_dir}/physicalDevice.cpp")
 
 ###############################################################
 
@@ -51,6 +53,7 @@ add_library(Venus SHARED
     ${window_src}
     ${instance_src}
     ${application_src}
+    ${physicalDevice_src}
 )
 target_compile_definitions(Venus PRIVATE
     $<$<CONFIG:Debug>:DEBUG>
@@ -81,6 +84,7 @@ target_include_directories(Venus PUBLIC
     ${window_dir}
     ${instance_dir}
     ${application_dir}
+    ${device_dir}
 )
 ###############################################################
 
