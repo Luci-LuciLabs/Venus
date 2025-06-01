@@ -26,10 +26,6 @@ namespace venus{
       VkSurfaceKHR m_surface;
       VkPhysicalDevice m_GPU_device = VK_NULL_HANDLE;
 
-      // vulkan 1.0-1.2 support very old devices so we do not need to ever check for it these days.
-      bool m_GPU_supports_VK_1_3;
-      bool m_GPU_supports_VK_1_4;
-
       SwapchainSupportDetails m_swapchainSupportDetails;
       QueueFamilyIndices m_queueFamilyIndices;
 

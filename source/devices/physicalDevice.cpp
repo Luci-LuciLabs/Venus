@@ -54,7 +54,8 @@ namespace venus {
       throw std::runtime_error("GPU chosen but still VK_NULL_HANDLE.");
     }
 
-    getChosenDeviceQualities();
+    m_swapchainSupportDetails = querySwapchainSupportDetails(m_GPU_device);
+    m_queueFamilyIndices = findQueueFamilyIndices(m_GPU_device);
 
     VN_LOG_INFO("GPU has been selected.");
 	}
@@ -183,10 +184,5 @@ namespace venus {
 		}
     return indices;
 	}
-
-
-  void PhysicalDevice::getChosenDeviceQualities(void){
-    
-  }
 
 }  // namespace venus
