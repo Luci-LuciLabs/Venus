@@ -1,8 +1,0 @@
-name: sample
-on: push
-jobs:
-  my-job:
-    runs-on: ubuntu-24.04
-    steps:
-      - name: step1
-        run: echo "Sample-workflow has been completed."
