@@ -1,0 +1,69 @@
+{
+  "version": 8,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 28,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "default",
+      "hidden": true,
+      "displayName": "Default configuration",
+      "description": "Default configuration using Ninja generator",
+      "generator": "Ninja",
+      "environment": {
+        "sourceDir": "."
+      }
+    },
+    {
+      "name": "Ninja-Debug",
+      "inherits":["default"],
+      "hidden": false,
+      "displayName": "Ninja-Debug configuration.",
+      "description": "Debug build using Ninja generator",
+      "binaryDir": "${sourceDir}/build/debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE":"Debug"
+      } 
+    },
+    {
+      "name": "Ninja-Release",
+      "inherits":["default"],
+      "hidden": false,
+      "displayName": "Ninja-Release configuration",
+      "description": "Release build using Ninja generator",
+      "binaryDir": "${sourceDir}/build/release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE":"Release"
+      }
+    },
+    {
+      "name": "gcc",
+      "hidden": false,
+      "displayName": "GCC/G++ Compiler",
+      "description": "Uses GCC/G++ compiler for build",
+      "cacheVariables": {
+      "toolchainFile": "${sourceDir}/cmake/x86_64gcc-g++.cmake"
+      }
+    },
+    {
+      "name": "clang",
+      "hidden": false,
+      "displayName": "Clang Compiler",
+      "description": "Uses Clang compiler for build",
+      "cacheVariables": {
+        "toolchainFile": "${sourceDir}/cmake/x86_64clang.cmake"
+      }
+    },
+    {
+      "name": "msvc",
+      "hidden": false,
+      "displayName": "MSVC Compiler",
+      "description": "Uses MSVC compiler for build",
+      "cacheVariables": {
+        "toolchainFile": "${sourceDir}/cmake/tools/x86_64msvc.cmake"
+      }
+    }
+  ]
+}
