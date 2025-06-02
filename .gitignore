@@ -1,5 +1,5 @@
 .vscode/*
-.venus/*
+.cache/*
 build/*
 .documentation/*
 .dev/*
