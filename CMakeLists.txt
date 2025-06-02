@@ -44,7 +44,6 @@ set(window_src "${window_dir}/window.cpp")
 set(instance_src "${instance_dir}/instance.cpp")
 set(application_src "${application_dir}/application.cpp")
 set(physicalDevice_src "${device_dir}/physicalDevice.cpp")
-
 ###############################################################
 
 # # !! PROJECT TARGET !!

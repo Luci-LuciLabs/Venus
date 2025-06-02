@@ -11,12 +11,6 @@
 
 namespace venus {
 
-#ifdef NDEBUG
-	const bool ENABLE_VALIDATION_LAYERS = false;
-#else
-	const bool ENABLE_VALIDATION_LAYERS = true;
-#endif
-
 	class Instance {
 	public:
 		Instance(AppDetails &detailsRef);
@@ -31,8 +25,7 @@ namespace venus {
     AppDetails &m_details;
 		VkInstance m_instance = VK_NULL_HANDLE;
 		VkDebugUtilsMessengerEXT m_layerMessenger = VK_NULL_HANDLE;
-
-		std::vector<const char *> VALIDATION_LAYERS = {"VK_LAYER_KHRONOS_validation"};
+    
 		std::vector<const char *> getRequiredExtensions(void);
 		bool checkValidationLayerSupport(void);
 

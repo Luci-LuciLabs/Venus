@@ -6,14 +6,33 @@
 #include <GLFW/glfw3.h>
 
 // STDLIB
-#include <iostream>
 #include <stdexcept>
 #include <cstring>
 #include <string>
 
 namespace venus {
 
-  	// clang-format off
+  const std::vector<const char*> ENABLED_EXTENSIONS = {
+    "VK_KHR_synchronization2"
+  };
+
+
+#ifdef NDEBUG
+	constexpr bool ENABLE_VALIDATION_LAYERS = false;
+#else
+	constexpr bool ENABLE_VALIDATION_LAYERS = true;
+#endif
+
+	const std::vector<const char *> VALIDATION_LAYERS = {
+		"VK_LAYER_KHRONOS_validation",
+		"VK_LAYER_LUNARG_api_dump",
+		"VK_LAYER_LUNARG_crash_diagnostic",
+		"VK_LAYER_LUNARG_monitor",
+    "VK_LAYER_KHRONOS_synchronization2"
+	};
+
+
+	// clang-format off
 	static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
 																										 VkDebugUtilsMessageTypeFlagsEXT messageType,
 																										 const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData,
@@ -68,108 +87,107 @@ namespace venus {
 	// clang-format on
 
 	static void glfwErrorCallbackFunc(int error, const char *desc) {
-    (void)error;
-    std::string err_desc = desc;
-    std::string message = "GLFW-ERROR: " + err_desc + "\n";
+		(void) error;
+		std::string err_desc = desc;
+		std::string message = "GLFW-ERROR: " + err_desc + "\n";
 		VN_LOG_ERROR(message);
 	}
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	Instance::Instance(AppDetails &detailsRef) : m_details(detailsRef) {
-    glfwSetErrorCallback(glfwErrorCallbackFunc);
+	Instance::Instance(AppDetails &detailsRef): m_details(detailsRef) {
+		glfwSetErrorCallback(glfwErrorCallbackFunc);
 		if(glfwInit() != GLFW_TRUE) {
-      VN_LOG_CRITICAL("Failed to intialize GLFW.");
+			VN_LOG_CRITICAL("Failed to intialize GLFW.");
 			throw std::runtime_error("Failed to initialize glfw.");
 		}
 
 		if(volkInitialize() != VK_SUCCESS) {
-      VN_LOG_CRITICAL("Failed to initialize volk.");
+			VN_LOG_CRITICAL("Failed to initialize volk.");
 			throw std::runtime_error("Failed to intialize volk.");
 		}
 
-    bool LAYERS_UNAVAILABLE = false;
+		bool LAYERS_UNAVAILABLE = false;
 		if(ENABLE_VALIDATION_LAYERS && !checkValidationLayerSupport()) {
-      VN_LOG_WARN("Validation layers requested but not available, will continue without validation layers.");
-      LAYERS_UNAVAILABLE = true;
+			VN_LOG_WARN("Validation layers requested but not available, will continue without validation layers.");
+			LAYERS_UNAVAILABLE = true;
 		}
 
-    uint32_t VULKAN_VERSION_FOUND;
-    if(vkEnumerateInstanceVersion(&VULKAN_VERSION_FOUND) != VK_SUCCESS){
-      VN_LOG_CRITICAL("Failed to find Vulkan.");
-      throw std::runtime_error("Failed to find Vulkan.");
-    }
+		uint32_t VULKAN_VERSION_FOUND;
+		if(vkEnumerateInstanceVersion(&VULKAN_VERSION_FOUND) != VK_SUCCESS) {
+			VN_LOG_CRITICAL("Failed to find Vulkan.");
+			throw std::runtime_error("Failed to find Vulkan.");
+		}
 
-    uint32_t maj = VK_API_VERSION_MAJOR(VULKAN_VERSION_FOUND);
-    uint32_t min = VK_API_VERSION_MINOR(VULKAN_VERSION_FOUND);
-    uint32_t pat = VK_API_VERSION_PATCH(VULKAN_VERSION_FOUND);
-    std::string versionMessage = "Found Vulkan Version: " + std::to_string(maj) + "." + std::to_string(min) + "." + std::to_string(pat)  + '\n';
-    VN_LOG_INFO(versionMessage);
+#ifndef NDEBUG
+		uint32_t maj = VK_API_VERSION_MAJOR(VULKAN_VERSION_FOUND);
+		uint32_t min = VK_API_VERSION_MINOR(VULKAN_VERSION_FOUND);
+		uint32_t pat = VK_API_VERSION_PATCH(VULKAN_VERSION_FOUND);
+		std::string versionMessage =
+			"Found Vulkan Version: " + std::to_string(maj) + "." + std::to_string(min) + "." + std::to_string(pat) + '\n';
+		VN_LOG_INFO(versionMessage);
+#endif
 
-    VkApplicationInfo appInfo = {};
-    appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
+		VkApplicationInfo appInfo = {};
+		appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
 
-    // ENGINE DETAILS
-    appInfo.pEngineName = "Vsadf";
-    appInfo.engineVersion = VK_MAKE_VERSION(VENUS_MAJOUR, VENUS_MINOUR, VENUS_PATCH);
-    
-    if(VULKAN_VERSION_FOUND < VK_MAKE_VERSION(1, 4, 0)){
-      std::string warnVersion = "Vulkan Version 1.4 not found, using Version: " + std::to_string(maj) + "." + std::to_string(min) + '\n';
-      VN_LOG_WARN(warnVersion);
-      appInfo.apiVersion = VULKAN_VERSION_FOUND;
-    }else{
-      VN_LOG_INFO("Using preferred Vulkan Version: 1.4");
-      appInfo.apiVersion = VK_API_VERSION_1_4; // DO NOT CHANGE. Venus is intended to use vulkan_1.4.xxx
-    }
+		// ENGINE DETAILS
+		appInfo.pEngineName = "Venus";
+		appInfo.engineVersion = VK_MAKE_VERSION(VENUS_MAJOUR, VENUS_MINOUR, VENUS_PATCH);
 
-    // APP DETAILS
-    appInfo.pApplicationName = m_details.name;
-    appInfo.applicationVersion = VK_MAKE_VERSION(m_details.versionMajour, m_details.versionMinour, m_details.versionPatch);
+		if(VULKAN_VERSION_FOUND < VK_MAKE_VERSION(1, 4, 0)) {
+			std::string warnVersion =
+				"Vulkan Version 1.4 not found, using Version: " + std::to_string(maj) + "." + std::to_string(min) + '\n';
+			VN_LOG_WARN(warnVersion);
+			appInfo.apiVersion = VULKAN_VERSION_FOUND;
+		} else {
+			VN_LOG_INFO("Using preferred Vulkan Version: 1.4");
+			appInfo.apiVersion = VK_API_VERSION_1_4;  // DO NOT CHANGE. Venus is intended to use vulkan_1.4.xxx
+		}
 
-    VkInstanceCreateInfo createInfo = {};
-    createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-    createInfo.pApplicationInfo = &appInfo;
-    
-    auto extensions = getRequiredExtensions();
-    createInfo.enabledExtensionCount = static_cast<uint32_t>(extensions.size());
-    createInfo.ppEnabledExtensionNames = extensions.data();
+		// APP DETAILS
+		appInfo.pApplicationName = m_details.name;
+		appInfo.applicationVersion =
+			VK_MAKE_VERSION(m_details.versionMajour, m_details.versionMinour, m_details.versionPatch);
 
-    if(LAYERS_UNAVAILABLE == true || ENABLE_VALIDATION_LAYERS == false){
-      createInfo.enabledLayerCount = 0;
-      createInfo.ppEnabledLayerNames = nullptr;
-    }else{
-      createInfo.enabledLayerCount = static_cast<uint32_t>(VALIDATION_LAYERS.size());
-      createInfo.ppEnabledLayerNames = VALIDATION_LAYERS.data();
-    }
+		VkInstanceCreateInfo createInfo = {};
+		createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+		createInfo.pApplicationInfo = &appInfo;
 
-    if(vkCreateInstance(&createInfo, nullptr, &m_instance) != VK_SUCCESS){
-      throw std::runtime_error("Failed to create vulkan instance.");
-    }
+		auto extensions = getRequiredExtensions();
+		createInfo.enabledExtensionCount = static_cast<uint32_t>(extensions.size());
+		createInfo.ppEnabledExtensionNames = extensions.data();
 
-    volkLoadInstance(m_instance);
-    setupLayerMessenger(m_instance, m_layerMessenger);
+		if(LAYERS_UNAVAILABLE == true || ENABLE_VALIDATION_LAYERS == false) {
+			createInfo.enabledLayerCount = 0;
+			createInfo.ppEnabledLayerNames = nullptr;
+		} else {
+			createInfo.enabledLayerCount = static_cast<uint32_t>(VALIDATION_LAYERS.size());
+			createInfo.ppEnabledLayerNames = VALIDATION_LAYERS.data();
+		}
+
+		if(vkCreateInstance(&createInfo, nullptr, &m_instance) != VK_SUCCESS) {
+			throw std::runtime_error("Failed to create vulkan instance.");
+		}
+
+		volkLoadInstance(m_instance);
+		setupLayerMessenger(m_instance, m_layerMessenger);
 	}
 
-
-
-
-
 	Instance::~Instance() {
+		if(ENABLE_VALIDATION_LAYERS) {
+			destroyDebugUtilsMessengerEXT(m_instance, m_layerMessenger, nullptr);
+		}
+		m_layerMessenger = VK_NULL_HANDLE;
 
-    if(ENABLE_VALIDATION_LAYERS){
-      destroyDebugUtilsMessengerEXT(m_instance, m_layerMessenger, nullptr);
-    }
-    m_layerMessenger = VK_NULL_HANDLE;
+		if(m_instance != VK_NULL_HANDLE) {
+			vkDestroyInstance(m_instance, nullptr);
+		}
+		m_instance = VK_NULL_HANDLE;
 
-    if(m_instance != VK_NULL_HANDLE){
-      vkDestroyInstance(m_instance, nullptr);
-    }
-    m_instance = VK_NULL_HANDLE;
-
-
-    glfwTerminate();
-    volkFinalize();
-  }
+		glfwTerminate();
+		volkFinalize();
+	}
 
 	std::vector<const char *> Instance::getRequiredExtensions(void) {
 		uint32_t glfwExtensionCount = 0;
@@ -180,6 +198,8 @@ namespace venus {
 		if(ENABLE_VALIDATION_LAYERS) {
 			extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
 		}
+
+    
 
 		return extensions;
 	}
@@ -228,13 +248,11 @@ namespace venus {
 		debugCreateInfo.pUserData = nullptr;
 
 		if(createDebugUtilsMessengerEXT(instance, &debugCreateInfo, nullptr, &debugMessenger) != VK_SUCCESS) {
-      VN_LOG_CRITICAL("Failed to create Validations-Layer-Debugger.");
+			VN_LOG_CRITICAL("Failed to create Validations-Layer-Debugger.");
 			throw std::runtime_error("Failed to create Validations-Layer-Debugger.");
 		}
 
-    VN_LOG_INFO("Vulkan Layers are enabled, Validations-Layer-Debugger created.");
+		VN_LOG_INFO("Vulkan Layers are enabled, Validations-Layer-Debugger created.");
 	}
-
-
 
 }  // namespace venus

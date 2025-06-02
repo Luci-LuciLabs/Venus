@@ -22,4 +22,18 @@ struct QueueFamilyIndices {
 };
 
 
+
+struct GPU_CAPABILITIES {
+  VkPhysicalDeviceProperties2 allProperties;
+  VkPhysicalDeviceIDProperties IDproperties;
+  VkPhysicalDeviceFeatures2 allFeatures;
+  VkPhysicalDeviceMemoryProperties2 memoryProperties;
+
+  SwapchainSupportDetails swapchainSupport;
+  QueueFamilyIndices queueIndices;
+
+
+};
+
+
 #endif  // VENUS_COMMON_GPU_STRUCTS_HPP

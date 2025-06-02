@@ -9,8 +9,6 @@
 
 namespace venus {
 
-	
-
 	PhysicalDevice::PhysicalDevice(const VkInstance& instanceRef, const VkSurfaceKHR& surfaceRef) : m_instance(instanceRef), m_surface(surfaceRef) {
     VN_LOG_INFO("Constructing PhysicalDevice.");
     chooseDevice();
@@ -54,8 +52,6 @@ namespace venus {
       throw std::runtime_error("GPU chosen but still VK_NULL_HANDLE.");
     }
 
-    m_swapchainSupportDetails = querySwapchainSupportDetails(m_GPU_device);
-    m_queueFamilyIndices = findQueueFamilyIndices(m_GPU_device);
 
     VN_LOG_INFO("GPU has been selected.");
 	}
@@ -184,5 +180,15 @@ namespace venus {
 		}
     return indices;
 	}
+
+
+
+  void PhysicalDevice::storeDeviceCapabilites(void){
+    
+
+
+  }
+
+
 
 }  // namespace venus
