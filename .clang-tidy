@@ -1,0 +1,23 @@
+Checks: > 
+  -*
+  modernize-*
+  performance-*
+  bugprone-*
+  misc-*
+  concurrency-*
+  cppcoreguidelines-*
+  clang-analyzer-*
+  llvm-include-order
+  -readability-*
+
+
+WarningsAsErrors: >
+  modernize-*
+  bugprone-*
+  concurrency-*
+  cppcoreguidelines-*
+
+CheckOptions:
+  Fix: false
+
+HeaderFilterRegex: 'source/*'
