@@ -102,7 +102,7 @@ def run_pylint(staged_python_files):
         print(f"Running Pylint on: {python_file}")
         result = subprocess.run(["pylint",
                                 "--max-line-length=120",
-                                "--module-naming-style=None",
+                                "--module-naming-style=any",
                                 python_file],
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE,
