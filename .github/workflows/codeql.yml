@@ -91,8 +91,8 @@ jobs:
 
     - name: Prepare Vulkan SDK (action marketplace)
       uses: humbletim/setup-vulkan-sdk@v1.2.1
-      with:                           
-        vulkan-query-version: 1.4.313 # Version used on primary development device.
+      with:
+        vulkan-query-version: 1.4.304.1 # not exact version on primary development system, but should work as both are 1.4.xxx
         vulkan-components: Vulkan-Headers, Vulkan-Loader
         vulkan-use-cache: true
     
