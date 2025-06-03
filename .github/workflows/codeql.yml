@@ -101,8 +101,6 @@ jobs:
     - if: matrix.build-mode == 'manual'
       shell: bash
       run: |
-          sudo apt update;
-          sudo apt install wayland-protocols wayland-scanner;
           git submodule update --init --recursive;
           mkdir build;
           cmake --preset=clangDebug -S . -B build;
