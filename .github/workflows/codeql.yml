@@ -86,7 +86,7 @@ jobs:
 
     - name: Install Vulkan SDK 1.4
       run: |
-          wget -qO- https://sdk.lunarg.com/sdk/download/latest/linux/vulkan-sdk.tar.gz | tar xz
+          curl -Ls https://sdk.lunarg.com/sdk/download/latest/linux/vulkan-sdk.tar.gz | tar xz
           export VULKAN_SDK=$(pwd)/vulkan-sdk
           echo "VULKAN_SDK=$VULKAN_SDK" >> $GITHUB_ENV
           echo "$VULKAN_SDK/bin" >> $GITHUB_PATH
