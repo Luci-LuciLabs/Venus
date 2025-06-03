@@ -3,14 +3,14 @@
     (DO NOT USE IF YOU ARE NOT CONTRIBUTING OR FORKING)
     
     If you are contributing:
-      These hooks are REQUIRED.
-      Any avoidance of project standard hooks will result in you being barred from further contributions.
+      These hooks are MANDATORY.
+      Any avoidance of project standards will result in you being barred from further contributions.
       Preservation of standards and conventions is absolutely essential to maintainability.
     
     If you are forking:
       These hooks are recommended.
       As you develop your fork you should strive to maintain your own standards and conventions,
-        however it is highly encouraged that you keep using everything available at the time of your fork.
+      its highly recommended that you keep using everything available at the time of your fork.
 """
 import os
 import sys
@@ -43,7 +43,7 @@ if __name__ == "__main__":
             finished_hook = os.path.splitext(file)[0]
             output_hook_path = os.path.join(GIT_HOOKS_DIR, finished_hook)
 
-            shutil.move(input_hook_path, output_hook_path)
+            shutil.copy2(input_hook_path, output_hook_path)
             os.chmod(output_hook_path, stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR)
             print(f"Succeeded in setting local git hook: {finished_hook}")
 
