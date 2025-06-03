@@ -7,32 +7,22 @@
   },
   "configurePresets": [
     {
-      "name": "default",
-      "hidden": true,
-      "displayName": "Default configuration",
-      "description": "Default configuration using Ninja generator",
-      "generator": "Ninja",
-      "environment": {
-        "sourceDir": "."
-      }
-    },
-    {
-      "name": "Ninja-Debug",
-      "inherits":["default"],
+      "name": "Debug",
       "hidden": false,
       "displayName": "Ninja-Debug configuration.",
       "description": "Debug build using Ninja generator",
+      "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/debug",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE":"Debug"
       } 
     },
     {
-      "name": "Ninja-Release",
-      "inherits":["default"],
+      "name": "Release",
       "hidden": false,
       "displayName": "Ninja-Release configuration",
       "description": "Release build using Ninja generator",
+      "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/release",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE":"Release"
@@ -43,27 +33,51 @@
       "hidden": false,
       "displayName": "GCC/G++ Compiler",
       "description": "Uses GCC/G++ compiler for build",
-      "cacheVariables": {
       "toolchainFile": "${sourceDir}/cmake/x86_64gcc-g++.cmake"
-      }
     },
     {
       "name": "clang",
       "hidden": false,
       "displayName": "Clang Compiler",
       "description": "Uses Clang compiler for build",
-      "cacheVariables": {
-        "toolchainFile": "${sourceDir}/cmake/x86_64clang.cmake"
-      }
+      "toolchainFile": "${sourceDir}/cmake/x86_64clang.cmake"
     },
     {
       "name": "msvc",
       "hidden": false,
       "displayName": "MSVC Compiler",
       "description": "Uses MSVC compiler for build",
-      "cacheVariables": {
-        "toolchainFile": "${sourceDir}/cmake/tools/x86_64msvc.cmake"
-      }
+      "toolchainFile": "${sourceDir}/cmake/tools/x86_64msvc.cmake"
+    },
+    {
+      "name": "gccDebug",
+      "hidden": false,
+      "inherits":["Debug", "gcc"]
+    },
+    {
+      "name": "gccRelease",
+      "hidden": false,
+      "inherits":["Release", "gcc"]
+    },
+    {
+      "name": "clangDebug",
+      "hidden": false,
+      "inherits":["Debug", "clang"]
+    },
+    {
+      "name": "clangRelease",
+      "hidden": false,
+      "inherits":["Release", "clang"]
+    },
+    {
+      "name": "msvcDebug",
+      "hidden": false,
+      "inherits":["Debug", "msvc"]
+    },
+    {
+      "name": "msvcRelease",
+      "hidden": false,
+      "inherits":["Release", "msvc"]
     }
   ]
 }
