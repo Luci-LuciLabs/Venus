@@ -25,7 +25,6 @@ configure_file(
 include("${cmake_helper_dir}/platforms.cmake")
 configurePlatform()
 
-set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # !!! PROJECT DIRECTORIES !!!
@@ -133,6 +132,7 @@ endif()
 ###########################################################################################
 
 # # !! GLFW RULES !!
+set(GLFW_BUILD_WAYLAND OFF)
 set(GLFW_INSTALL OFF)
 set(GLFW_BUILD_DOCS OFF)
 add_subdirectory(vendor/glfw)
