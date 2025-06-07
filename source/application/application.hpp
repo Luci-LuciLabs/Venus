@@ -1,29 +1,31 @@
 #ifndef VENUS_APPLICATION_HPP
 #define VENUS_APPLICATION_HPP
 
+// PROJECT
 #include "appDetails.hpp"
-#include "instance.hpp"
-#include "window.hpp"
-#include "physicalDevice.hpp"
 
+// STDLIB
+#include <memory>
 namespace venus {
+	class Window;
+	class Instance;
 	class Application {
 	public:
-		Application();
+		Application(const AppDetails &detailsRef);
 		~Application();
 
 		Application(const Application &) = delete;
-		Application &operator=(const Application &) = delete;
+		auto operator=(const Application &) -> Application & = delete;
 
-		void run(void);
+		Application(const Application &&) = delete;
+		auto operator=(const Application &&) -> Application && = delete;
+
+		void run();
 
 	private:
-		AppDetails app_details = {"Venus-App", 1, 0, 0};
-		WindowDetails window_details = {"Venus-Window", 480, 640};
-
-		Instance m_instance{app_details};
-		Window m_window{window_details, m_instance};
-		PhysicalDevice m_GPU{m_instance.getInstance(), m_window.getSurface()};
+		AppDetails m_details;
+		std::unique_ptr<Instance> m_instance;
+		std::unique_ptr<Window> m_window;
 	};
 
 }  // namespace venus
