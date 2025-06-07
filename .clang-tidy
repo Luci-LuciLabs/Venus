@@ -1,23 +1,30 @@
 Checks: > 
-  -*
-  modernize-*
-  performance-*
-  bugprone-*
-  misc-*
-  concurrency-*
-  cppcoreguidelines-*
-  clang-analyzer-*
-  llvm-include-order
-  -readability-*
+  -*,
+  modernize*,
+  performance*,
+  bugprone*,
+  misc*,
+  concurrency*,
+  cppcoreguidelines*,
+  clang-analyzer*,
+  llvm-include-order,
+  readability-*,
+  -cppcoreguidelines-pro-type-reinterpret-cast,
+  -misc-include-cleaner
 
 
 WarningsAsErrors: >
-  modernize-*
-  bugprone-*
-  concurrency-*
-  cppcoreguidelines-*
+  modernize*,
+  bugprone*,
+  performance*,
+  concurrency*,
+  cppcoreguidelines*,
+  clang-analyzer*,
+  -cppcoreguidelines-pro-type-reinterpret-cast,
+  -misc-include-cleaner
 
 CheckOptions:
   Fix: false
 
-HeaderFilterRegex: 'source/*'
+HeaderFilterRegex: "source/**/*"
+
