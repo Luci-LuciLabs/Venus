@@ -1,57 +1,54 @@
 cmake_minimum_required(VERSION 3.28)
 project(Venus LANGUAGES C CXX)
-set(CMAKE_CXX_STANDARD 23)
+
 # Update project version here, will automatically apply to generated header for necessary version macros in source.
 set(PROJECT_VERSION_MAJOR 1)
 set(PROJECT_VERSION_MINOR 0)
 set(PROJECT_VERSION_PATCH 0)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON) # DO NOT CHANGE.
 
-option(BUILD_DOCS "Build Doxygen documentation" OFF)
-option(BUILD_DEBUG "Builds in Debug mode." OFF)
-option(BUILD_RELEASE "Builds in Release mode." OFF)
-option(BUILD_CLIENT "Builds and links to V_client." OFF)
-option(DISABLE_FLAGS "Disables all compiler-flags regardless of build-type." OFF)
-option(SANITIZE_PROJECT "Enables -fsanitize=address across entire project." OFF)
+option(SANITIZE "Enables project sanitization, type is selected using presets." OFF)
 
-# this directory contains all cmake includes or files needing configuration by cmake
+
 set(cmake_helper_dir "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+include("${cmake_helper_dir}/platforms.cmake")
 
-# configure engine version header for instance class
+
+if(SANITIZE)
+  include("${cmake_helper_dir}/sanitize.cmake.in")
+endif()
+
+configurePlatform()
+
 configure_file(
   ${cmake_helper_dir}/version.hpp.in
   ${CMAKE_CURRENT_SOURCE_DIR}/source/common/version.hpp
 )
 
-include("${cmake_helper_dir}/platforms.cmake")
-configurePlatform()
-
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # !!! PROJECT DIRECTORIES !!!
 ###########################################################################################
 set(source_dir "${CMAKE_CURRENT_SOURCE_DIR}/source")
 set(common_dir "${source_dir}/common")
-set(window_dir "${source_dir}/window")
-set(instance_dir "${source_dir}/instance")
 set(application_dir "${source_dir}/application")
-set(device_dir "${source_dir}/devices")
+
+set(glfw_context_dir "${source_dir}/glfwContext")
+set(vulkan_context_dir "${source_dir}/vulkanContext")
+
 
 # !!! PROJECT RULES !!!
 ###########################################################################################
 # # !! PROJECT SOURCE !!
-set(window_src "${window_dir}/window.cpp")
-set(instance_src "${instance_dir}/instance.cpp")
 set(application_src "${application_dir}/application.cpp")
-set(physicalDevice_src "${device_dir}/physicalDevice.cpp")
+set(glfw_window_src "${glfw_context_dir}/window.cpp")
+set(vulkan_instance_src "${vulkan_context_dir}/instance.cpp")
 ###############################################################
 
 # # !! PROJECT TARGET !!
 add_library(Venus SHARED
-    ${logger_src}
-    ${window_src}
-    ${instance_src}
     ${application_src}
-    ${physicalDevice_src}
+    ${glfw_window_src}
+    ${vulkan_instance_src}
 )
 target_compile_definitions(Venus PRIVATE
     $<$<CONFIG:Debug>:DEBUG>
@@ -68,9 +65,9 @@ if(NOT DISABLE_FLAGS)
       $<$<CONFIG:Release>:-03>
   )
 
-  if(SANITIZE_PROJECT)
-    target_compile_options(Venus PRIVATE -fsanitize=address)
-    target_link_options(Venus PRIVATE -fsanitize=address)
+  if(SANITIZE)
+    target_compile_options(Venus PRIVATE ${SANITIZE_FLAGS})
+    target_link_options(Venus PRIVATE ${SANITIZE_FLAGS})
   endif()
 endif()
 
@@ -79,10 +76,9 @@ endif()
 target_include_directories(Venus PUBLIC
     ${common_dir}
     ${logger_dir}
-    ${window_dir}
-    ${instance_dir}
     ${application_dir}
-    ${device_dir}
+    ${glfw_context_dir}
+    ${vulkan_context_dir}
 )
 ###############################################################
 
@@ -117,9 +113,9 @@ if(NOT DISABLE_FLAGS)
       $<$<CONFIG:Release>:-03>
   )
 
-  if(SANITIZE_PROJECT)
-    target_compile_options(V_client PRIVATE -fsanitize=address)
-    target_link_options(V_client PRIVATE -fsanitize=address)
+  if(SANITIZE)
+    target_compile_options(V_client PRIVATE ${SANITIZE_FLAGS})
+    target_link_options(V_client PRIVATE ${SANITIZE_FLAGS})
   endif()
 endif()
 
@@ -174,9 +170,9 @@ if(NOT DISABLE_FLAGS)
       $<$<CONFIG:Release>:-03>
   )
 
-  if(SANITIZE_PROJECT)
-    target_compile_options(VN_logger PRIVATE -fsanitize=address)
-    target_link_options(VN_logger PRIVATE -fsanitize=address)
+  if(SANITIZE)
+    target_compile_options(VN_logger PRIVATE ${SANITIZE_FLAGS})
+    target_link_options(VN_logger PRIVATE ${SANITIZE_FLAGS})
   endif()
 endif()
 
