@@ -33,6 +33,8 @@ def run_cmake_build():
         print(result.stdout)
         print("Aborting Commit.")
         print("Project must compile to commit.")
+        sys.exit(1)
+
 
 
 
@@ -49,6 +51,7 @@ def run_clang_format(staged_c_family_files):
     for c_family_file in staged_c_family_files:
         print(f"Running Clang-Format on: {c_family_file}")
         result = subprocess.run(["clang-format", "-i", c_family_file], check=False)
+        subprocess.run(["git", "add", c_family_file], check=True)
         if result.returncode != 0:
             print(f"Failed to run Clang-format on file: {c_family_file}")
             print("Aborting Commit.")
@@ -63,6 +66,9 @@ def run_clang_tidy(staged_c_family_files):
     """Runs clang-tidy against all staged c-family files.
         Fails if clang-tidy reports any problems.
         (clang-tidy rules are defined in projectRoot/.clang-tidy)
+        
+        Clang-tidy will never fix it, that is entirely upon the developer.
+        Be sure to review and resolve issues before committing.
 
     Args:
         stagedCFamilyFiles (type=File-Dict): self-explanatory.
@@ -74,7 +80,6 @@ def run_clang_tidy(staged_c_family_files):
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE,
                                 text=True, check=False)
-        subprocess.run(["git", "add", c_family_file], check=True)
 
         if result.returncode != 0:
             failures.append(c_family_file)
