@@ -64,7 +64,7 @@ namespace venus {
 				bool extensionFound = false;
 
 				for(auto extensionAvailable : availableExtensions) {
-					std::string_view extensionName = static_cast<const char *>(extensionAvailable.extensionName);
+					const std::string_view extensionName = static_cast<const char *>(extensionAvailable.extensionName);
 					if(extensionRequired == extensionName) {
 						extensionFound = true;
 						break;
