@@ -22,19 +22,21 @@ namespace venus {
 		auto operator=(const Window &&) -> Window & = delete;
 
 		[[nodiscard]] auto shouldClose() const { return static_cast<bool>(glfwWindowShouldClose(m_window)); }
-		[[nodiscard]] auto getSurface() const { return m_surface; }
+		[[nodiscard]] auto getSurfaceHandle() const { return m_surface; }
+		[[nodiscard]] auto getAppDetails() const { return m_details; }
+
+		void createSurface();
+		void destroySurface();
 
 	private:
 		AppDetails m_details;
 		GLFWwindow *m_window = nullptr;
+
 		VkSurfaceKHR m_surface = VK_NULL_HANDLE;
 		VkExtent2D m_currentExtent = {};
 
 		void createWindow();
 		void destroyWindow();
-
-		void createSurface(VkInstance instance);
-		void destroySurface(VkInstance instance);
 	};
 
 }  // namespace venus
