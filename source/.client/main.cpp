@@ -1,10 +1,7 @@
-#include "appDetails.hpp"
 #include "application.hpp"
 
 #include <iostream>
 #include <memory>
-
-#include <print>
 
 auto main() -> int {
 	venus::AppDetails details = {.applicationName = "V_client",
