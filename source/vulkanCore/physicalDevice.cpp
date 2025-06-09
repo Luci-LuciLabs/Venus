@@ -84,17 +84,17 @@ namespace venus {
 					break;
 				}
 
-				bool familySupportsGraphics = static_cast<bool>(family.queueFlags & VK_QUEUE_GRAPHICS_BIT);
+				const bool familySupportsGraphics = static_cast<bool>(family.queueFlags & VK_QUEUE_GRAPHICS_BIT);
 				if(family.queueCount > 0 && familySupportsGraphics) {
 					indices.graphicsFamilyIndex = INDEX_NUMBER;
 				}
 
-				bool familySupportsCompute = static_cast<bool>(family.queueFlags & VK_QUEUE_COMPUTE_BIT);
+				const bool familySupportsCompute = static_cast<bool>(family.queueFlags & VK_QUEUE_COMPUTE_BIT);
 				if(family.queueCount > 0 && familySupportsCompute) {
 					indices.computeFamilyIndex = INDEX_NUMBER;
 				}
 
-				bool familySupportsTransfer = static_cast<bool>(family.queueFlags & VK_QUEUE_TRANSFER_BIT);
+				const bool familySupportsTransfer = static_cast<bool>(family.queueFlags & VK_QUEUE_TRANSFER_BIT);
 				if(family.queueCount > 0 && familySupportsTransfer) {
 					indices.transferFamilyIndex = INDEX_NUMBER;
 				}
@@ -143,7 +143,7 @@ namespace venus {
 				VN_LOG_WARN("This device does not support minimum required queue families.");
 				return false;
 			}
-			SwapchainSupportDetails details = querySwapchainSupport(device, surface);
+			const SwapchainSupportDetails details = querySwapchainSupport(device, surface);
 			return !(details.supportedSurfaceFormats.empty() || details.supportedPresentModes.empty());
 		}
 
@@ -165,7 +165,7 @@ namespace venus {
 		std::multimap<uint32_t, VkPhysicalDevice> sortedDevices;
 		for(const auto &possibleDevice : devicesFound) {
 			if(meetsMinimumRequirements(possibleDevice, surfaceRef)) {
-				uint32_t deviceScore = reportDeviceScore(possibleDevice);
+				const uint32_t deviceScore = reportDeviceScore(possibleDevice);
 				sortedDevices.insert(std::make_pair(deviceScore, possibleDevice));
 			}
 		}
