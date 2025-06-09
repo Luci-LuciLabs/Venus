@@ -33,7 +33,7 @@ set(common_dir "${source_dir}/common")
 set(application_dir "${source_dir}/application")
 
 set(glfw_context_dir "${source_dir}/glfwContext")
-set(vulkan_context_dir "${source_dir}/vulkanContext")
+set(vulkan_core_dir "${source_dir}/vulkanCore")
 
 
 # !!! PROJECT RULES !!!
@@ -41,7 +41,11 @@ set(vulkan_context_dir "${source_dir}/vulkanContext")
 # # !! PROJECT SOURCE !!
 set(application_src "${application_dir}/application.cpp")
 set(glfw_window_src "${glfw_context_dir}/window.cpp")
-set(vulkan_instance_src "${vulkan_context_dir}/instance.cpp")
+set(vulkan_instance_src "${vulkan_core_dir}/instance.cpp")
+set(vulkan_core_src "${vulkan_core_dir}/vulkanCore.cpp")
+set(vulkan_gpu_src "${vulkan_core_dir}/physicalDevice.cpp")
+set(vulkan_logical_src "${vulkan_core_dir}/logicalDevice.cpp")
+
 ###############################################################
 
 # # !! PROJECT TARGET !!
@@ -49,6 +53,9 @@ add_library(Venus SHARED
     ${application_src}
     ${glfw_window_src}
     ${vulkan_instance_src}
+    ${vulkan_core_src}
+    ${vulkan_gpu_src}
+    ${vulkan_logical_src}
 )
 target_compile_definitions(Venus PRIVATE
     $<$<CONFIG:Debug>:DEBUG>
@@ -62,7 +69,6 @@ if(NOT DISABLE_FLAGS)
       $<$<CONFIG:Debug>:-pedantic>
       $<$<CONFIG:Debug>:-ggdb>
       $<$<CONFIG:Debug>:-fdiagnostics-color=always>
-      $<$<CONFIG:Release>:-03>
   )
 
   if(SANITIZE)
@@ -78,7 +84,7 @@ target_include_directories(Venus PUBLIC
     ${logger_dir}
     ${application_dir}
     ${glfw_context_dir}
-    ${vulkan_context_dir}
+    ${vulkan_core_dir}
 )
 ###############################################################
 
@@ -110,7 +116,6 @@ if(NOT DISABLE_FLAGS)
       $<$<CONFIG:Debug>:-pedantic>
       $<$<CONFIG:Debug>:-ggdb>
       $<$<CONFIG:Debug>:-fdiagnostics-color=always>
-      $<$<CONFIG:Release>:-03>
   )
 
   if(SANITIZE)
@@ -167,7 +172,6 @@ if(NOT DISABLE_FLAGS)
       $<$<CONFIG:Debug>:-pedantic>
       $<$<CONFIG:Debug>:-ggdb>
       $<$<CONFIG:Debug>:-fdiagnostics-color=always>
-      $<$<CONFIG:Release>:-03>
   )
 
   if(SANITIZE)
