@@ -16,8 +16,6 @@ if(SANITIZE)
   include("${cmake_helper_dir}/sanitize.cmake.in")
 endif()
 
-configurePlatform()
-
 configure_file(
   ${cmake_helper_dir}/version.hpp.in
   ${CMAKE_CURRENT_SOURCE_DIR}/source/engine/common/version.hpp
