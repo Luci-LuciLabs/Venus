@@ -9,7 +9,6 @@ Checks: >
   clang-analyzer*,
   llvm-include-order,
   readability-*,
-  -cppcoreguidelines-pro-type-reinterpret-cast,
   -misc-include-cleaner
 
 
@@ -20,7 +19,6 @@ WarningsAsErrors: >
   concurrency*,
   cppcoreguidelines*,
   clang-analyzer*,
-  -cppcoreguidelines-pro-type-reinterpret-cast,
   -misc-include-cleaner
 
 CheckOptions:
