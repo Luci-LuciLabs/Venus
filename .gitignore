@@ -1,7 +1,4 @@
 .vscode/*
 .cache/*
 build/*
-.documentation/*
-.dev/*
-resources/*
-TODO/*
+documentation/*
