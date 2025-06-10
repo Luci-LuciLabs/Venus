@@ -7,9 +7,7 @@
 // STDLIB
 #include <memory>
 namespace venus {
-	class RuntimeBootstrapper;
-	class VulkanCore;
-	class Window;
+	class Runtime;
 	class Application {
 	public:
 		explicit Application(const AppDetails &detailsRef);
@@ -24,10 +22,8 @@ namespace venus {
 		void run();
 
 	private:
-		std::unique_ptr<RuntimeBootstrapper> BOOT_STRAPPER;
 		AppDetails m_details;
-		std::unique_ptr<VulkanCore> m_vulkanCore;
-		std::unique_ptr<Window> m_window;
+		std::unique_ptr<Runtime> m_runtime;
 	};
 
 }  // namespace venus
