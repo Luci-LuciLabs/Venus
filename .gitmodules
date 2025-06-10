@@ -1,0 +1,12 @@
+[submodule "source/engine/.LIBRARIES/glfw"]
+	path = source/engine/.LIBRARIES/glfw
+	url = https://github.com/glfw/glfw.git
+[submodule "source/engine/.LIBRARIES/volk"]
+	path = source/engine/.LIBRARIES/volk
+	url = https://github.com/zeux/volk.git
+[submodule "source/engine/.LIBRARIES/vma"]
+	path = source/engine/.LIBRARIES/vma
+	url = https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator.git
+[submodule "source/debug/.LIBRARIES/quill"]
+	path = source/debug/.LIBRARIES/quill
+	url = https://github.com/odygrd/quill.git
