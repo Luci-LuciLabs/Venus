@@ -2,7 +2,7 @@
 #define VENUS_ENGINE_RUNTIME_HPP
 
 // PROJECT
-#include "appDetails.hpp"
+#include "venusConfigOptions.hpp"
 
 // STDLIB
 #include <memory>
@@ -10,10 +10,20 @@
 namespace venus {
 	class RuntimeBootstrapper;
 	class Window;
-	class VulkanCore;
+	class Renderer;
+
+	/**
+   * @brief A runtime manager object.
+   * 
+   * @class Runtime
+   *
+   * @details This object manages the runtime loop and the necessary components for loop steps.
+   *
+   *          This object cannot be copied. This object cannot be moved.
+   */
 	class Runtime {
 	public:
-		explicit Runtime(const AppDetails &detailsRef);
+		explicit Runtime(const ApplicationConfigDetails &configDetails);
 		~Runtime();
 
 		Runtime(const Runtime &) = delete;
@@ -24,10 +34,11 @@ namespace venus {
 		void startEngine();
 
 	private:
-		AppDetails m_details;
-		std::unique_ptr<RuntimeBootstrapper> m_bootstrapper;
-		std::unique_ptr<Window> m_window;
-		std::unique_ptr<VulkanCore> m_vulkanCore;
+		ApplicationConfigDetails m_details;
+		std::unique_ptr<RuntimeBootstrapper> m_bootStrapper;
+		std::shared_ptr<Window> m_window;  // Window is needed by Renderer class.
+
+		std::unique_ptr<Renderer> m_renderer;
 	};
 
 }  // namespace venus
