@@ -6,13 +6,11 @@
 
 namespace venus {
 
-	Application::Application(const AppDetails &detailsRef): m_details(detailsRef) {
+	Application::Application(const ApplicationConfigDetails &configDetails): m_details(configDetails) {
 		m_runtime = std::make_unique<Runtime>(m_details);
 	}
 
 	Application::~Application() {
-		VN_LOG_INFO("Destroying application.");
-
 		m_runtime.reset();
 
 		VN_LOG_INFO("Destroyed Venus.");
@@ -20,6 +18,9 @@ namespace venus {
 
 	void Application::run() {
 		VN_LOG_INFO("Running Venus...");
+		VN_LOG_INFO(std::format("Application Identity: {} ~v{}.{}.{}", m_details.identity.name,
+														m_details.identity.version.major, m_details.identity.version.minor,
+														m_details.identity.version.patch));
 		m_runtime->startEngine();
 	}
 
