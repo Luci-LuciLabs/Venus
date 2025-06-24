@@ -2,7 +2,7 @@
 #define VENUS_GLFW_WINDOW_HPP
 
 // project
-#include "appConfigOptions.hpp"
+#include "venusConfigOptions.hpp"
 
 // THIRD PARTY
 #include "volk.h"

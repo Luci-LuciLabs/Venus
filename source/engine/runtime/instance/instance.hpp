@@ -2,7 +2,7 @@
 #define VENUS_INSTANCE_HPP
 
 // PROJECT
-#include "appConfigOptions.hpp"
+#include "venusConfigOptions.hpp"
 
 // THIRD PARTY
 #include "volk.h"
