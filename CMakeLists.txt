@@ -2,9 +2,10 @@ cmake_minimum_required(VERSION 3.28)
 project(VenusProject LANGUAGES C CXX)
 
 # Update project version here, will automatically apply to generated header for necessary version macros in source.
-set(PROJECT_VERSION_MAJOR 1)
-set(PROJECT_VERSION_MINOR 0)
+set(PROJECT_VERSION_MAJOR 0)
+set(PROJECT_VERSION_MINOR 1)
 set(PROJECT_VERSION_PATCH 0)
+set(PROJECT_VERSION_SUFFIX "alpha")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON) # DO NOT CHANGE.
 
 option(SANITIZE "Enables project sanitization, type is selected using presets." OFF)

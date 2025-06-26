@@ -9,43 +9,44 @@ project(venusEngine LANGUAGES C CXX)
 set(engine_common_directory "${CMAKE_CURRENT_SOURCE_DIR}/common")
 
 set(runtime_source_directory "${CMAKE_CURRENT_SOURCE_DIR}/runtime")
+set(runtime_subdirectories
+        "${runtime_source_directory}/instance"
+        "${runtime_source_directory}/window"
+        "${runtime_source_directory}/input"
+)
 
-set(rendering_source_directory "${CMAKE_CURRENT_SOURCE_DIR}/rendering")
-
-set(rendering_glfw_directory "${rendering_source_directory}/glfw")
-
-
-set(rendering_vulkan_directory "${rendering_source_directory}/vulkan")
-set(rendering_vulkan_directories_list
-        "${rendering_vulkan_directory}"
-        "${rendering_vulkan_directory}/instance"
-        "${rendering_vulkan_directory}/device"
+set(render_system_source_directory "${CMAKE_CURRENT_SOURCE_DIR}/renderer")
+set(render_system_directories
+        "${render_system_source_directory}"
+        "${render_system_source_directory}/device"
+        "${render_system_source_directory}/swapchain"
+        "${render_system_source_directory}/pipeline"
+        "${render_system_source_directory}/renderer"
 )
 
 ########################################################################
 #                     VENUS-ENGINE SOURCES                  
 ########################################################################
-set(runtime_sources "${runtime_source_directory}/runtime.cpp")
-
-set(rendering_glfw_sources 
-        "${rendering_glfw_directory}/window.cpp"
+set(runtime_sources 
+        "${runtime_source_directory}/runtime.cpp"
+        "${runtime_source_directory}/instance/instance.cpp"
+        "${runtime_source_directory}/window/window.cpp"
+        "${runtime_source_directory}/input/keyboardInput.cpp"
 )
 
-set(rendering_vulkan_sources
-        "${rendering_vulkan_directory}/vulkanCore.cpp"
-        "${rendering_vulkan_directory}/instance/instance.cpp"
-        "${rendering_vulkan_directory}/device/physicalDevice.cpp"
-        "${rendering_vulkan_directory}/device/logicalDevice.cpp"
+set(renderer_sources
+        "${render_system_source_directory}/device/physicalDevice.cpp"
+        "${render_system_source_directory}/device/logicalDevice.cpp"
+        "${render_system_source_directory}/renderer/renderer.cpp"
+        "${render_system_source_directory}/swapchain/swapchain.cpp"
+        "${render_system_source_directory}/pipeline/graphicsPipeline.cpp"
 )
 
 
 set(venus_engine_sources
         ${runtime_sources}
-        ${rendering_glfw_sources}
-        ${rendering_vulkan_sources}
+        ${renderer_sources}
 )
-
-
 
 
 
@@ -58,12 +59,12 @@ set_target_properties(venusEngine PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 target_include_directories(venusEngine PUBLIC 
         ${engine_common_directory}
-        ${runtime_source_directory}        
+        ${runtime_source_directory}      
 )
 
 target_include_directories(venusEngine PRIVATE
-        ${rendering_glfw_directory}
-        ${rendering_vulkan_directories_list}
+        ${runtime_subdirectories}
+        ${render_system_directories}
 )
 
 target_compile_definitions(venusEngine PRIVATE
