@@ -97,6 +97,8 @@ namespace venus {
 			glfwPollEvents();  // polls for window and input events handled by glfw.
 			m_renderer->draw();
 		}
+
+		vkDeviceWaitIdle(volkGetLoadedDevice());
 	}
 
 	Runtime::~Runtime() {
