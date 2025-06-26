@@ -33,6 +33,7 @@ namespace venus {
 
 		[[nodiscard]] auto shouldClose() const { return static_cast<bool>(glfwWindowShouldClose(m_window)); }
 		[[nodiscard]] auto getSurfaceHandle() const { return m_surface; }
+		[[nodiscard]] auto getCurrentSurfaceExtent() -> VkExtent2D;
 
 	private:
 		WindowConfigDetails m_details;
@@ -42,7 +43,6 @@ namespace venus {
 		const GLFWvidmode *m_mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
 		VkSurfaceKHR m_surface = VK_NULL_HANDLE;
-		VkExtent2D m_currentExtent = {};
 
 		void createNormalWindow();
 		void createFullscreenWindow();

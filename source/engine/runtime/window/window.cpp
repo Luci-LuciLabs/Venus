@@ -124,4 +124,13 @@ namespace venus {
 
 	void Window::changeResolution(uint16_t width, uint16_t height) { glfwSetWindowSize(m_window, width, height); }
 
+	auto Window::getCurrentSurfaceExtent() -> VkExtent2D {
+		int glfw_width = 0;
+		int glfw_height = 0;
+
+		glfwGetFramebufferSize(m_window, &glfw_width, &glfw_height);
+
+		return {.width = static_cast<uint32_t>(glfw_width), .height = static_cast<uint32_t>(glfw_height)};
+	}
+
 }  // namespace venus
