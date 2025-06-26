@@ -1,0 +1,30 @@
+cmake_policy(VERSION 3.28)
+message(STATUS "Attempting to find clang.")
+set(CMAKE_SYSTEM_NAME "${CMAKE_HOST_SYSTEM_NAME}")
+
+find_program(CLANG_C NAMES clang REQUIRED)
+find_program(CLANG_CXX NAMES clang++ REQUIRED)
+set(CMAKE_C_COMPILER ${CLANG_C} CACHE STRING "" FORCE)
+set(CMAKE_CXX_COMPILER ${CLANG_CXX} CACHE STRING "" FORCE)
+message(STATUS "Successfully found clang, now using clang compiler.")
+
+
+find_program(CLANG_DEPS NAMES clang-scan-deps PATHS /usr/bin /usr/local/bin /opt/homebrew/bin)
+if(CLANG_DEPS)
+message(STATUS "Successfully found clang dependency scanner.")
+set(CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS ${CLANG_DEPS} CACHE STRING "" FORCE)
+else()
+message(STATUS "Failed to find clang dependency scanner.")
+endif()
+
+set(CMAKE_SYSTEM_PROCESSOR "x86_64")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m64")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m64")
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)

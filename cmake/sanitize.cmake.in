@@ -1,0 +1,19 @@
+include_guard(GLOBAL)
+cmake_policy(VERSION 3.28)
+
+if(SANITIZE_MODE STREQUAL "thread-safety")
+  message(STATUS "Sanitize mode: Thread-Safety.")
+  set(SANITIZE_FLAGS "-fsanitize=thread")
+
+elseif(SANITIZE_MODE STREQUAL "memory-safety")
+  message(STATUS "Sanitize mode: Memory-Safety.")
+  set(SANITIZE_FLAGS "-fsanitize=address,undefined,leak")
+
+elseif(SANITIZE_MODE STREQUAL "security")
+  message(STATUS "Sanitize mode: Security.")
+  if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    set(SANITIZE_FLAGS "-fsanitize=cfi,bounds,nullability, integer")
+  else()
+    set(SANITIZE_FLAGS "-fsanitize=bounds,nullability, integer")
+  endif()
+endif()

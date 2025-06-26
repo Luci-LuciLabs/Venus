@@ -1,2 +1,2 @@
 
-# Hello Venus
+# Getting started with Venus

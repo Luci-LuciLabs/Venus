@@ -1,0 +1,209 @@
+{
+  "version": 8,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 28,
+    "patch": 0
+  },
+  "configurePresets": [
+
+
+
+
+
+    {
+      "name": "Debug",
+      "hidden": true,
+      "displayName": "Ninja-Debug configuration",
+      "description": "Debug build using Ninja generator",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "SANITIZE":"OFF"
+      } 
+    },
+    {
+      "name": "Sanitize",
+      "hidden": true,
+      "displayName": "Ninja-Sanitize configuration",
+      "description": "Sanitize build using Ninja generator",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/sanitize",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "SANITIZE": "ON"
+      }
+    },
+    {
+      "name": "Release",
+      "hidden": true,
+      "displayName": "Ninja-Release configuration",
+      "description": "Release build using Ninja generator",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE":"Release",
+        "SANITIZE": "OFF"
+      }
+    },
+
+
+
+
+
+    {
+      "name": "gcc",
+      "hidden": true,
+      "displayName": "GCC/G++ Compiler",
+      "description": "Uses GCC/G++ compiler for build",
+      "toolchainFile": "${sourceDir}/cmake/x86_64gcc-g++.cmake"
+    },
+    {
+      "name": "clang",
+      "hidden": true,
+      "displayName": "Clang Compiler",
+      "description": "Uses Clang compiler for build",
+      "toolchainFile": "${sourceDir}/cmake/x86_64clang.cmake"
+    },
+    {
+      "name": "msvc",
+      "hidden": true,
+      "displayName": "MSVC Compiler",
+      "description": "Uses MSVC compiler for build",
+      "toolchainFile": "${sourceDir}/cmake/tools/x86_64msvc.cmake"
+    },
+
+
+
+
+
+    {
+      "name": "gccDebug",
+      "hidden": false,
+      "inherits":["Debug", "gcc"],
+      "displayName": "GCC Debug Config",
+      "description": "Debug build with full flags using GCC"
+    },
+    {
+      "name": "gccRelease",
+      "hidden": false,
+      "inherits":["Release", "gcc"],
+      "displayName": "GCC Release Config",
+      "description": "Release build with full flags using GCC"
+    },
+
+
+
+
+
+    {
+      "name": "clangDebug",
+      "hidden": false,
+      "inherits":["Debug", "clang"],
+      "displayName": "Clang Debug Config",
+      "description": "Debug build with full flags using Clang"
+    },
+    {
+      "name": "clangRelease",
+      "hidden": false,
+      "inherits":["Release", "clang"],
+      "displayName": "Clang Debug Config",
+      "description": "Debug build with full flags using Clang"
+    },
+
+
+
+
+
+    {
+      "name": "msvcDebug",
+      "hidden": false,
+      "inherits":["Debug", "msvc"],
+      "displayName": "MSVC Debug Config",
+      "description": "Debug build with full flags using MSVC"
+    },
+    {
+      "name": "msvcRelease",
+      "hidden": false,
+      "inherits":["Release", "msvc"],
+      "displayName": "MSVC Debug Config",
+      "description": "Debug build with full flags using MSVC"
+    },
+
+
+
+
+
+    {
+      "name": "clangSanitizeThread",
+      "hidden": false,
+      "inherits":["Sanitize", "clang"],
+      "displayName": "Clang Sanitize Config",
+      "description": "Debug Thread-Sanitization build with full flags using Clang",
+      "cacheVariables": {
+        "SANITIZE_MODE": "thread-safety"
+      }
+    },
+    {
+      "name": "clangSanitizeMemory",
+      "hidden": false,
+      "inherits":["Sanitize", "clang"],
+      "displayName": "Clang Sanitize Config",
+      "description": "Debug Memory-Sanitization build with full flags using Clang",
+      "cacheVariables": {
+        "SANITIZE_MODE": "memory-safety"
+      }
+    },
+    {
+      "name": "clangSanitizeSecurity",
+      "hidden": false,
+      "inherits":["Sanitize", "clang"],
+      "displayName": "Clang Sanitize Config",
+      "description": "Debug Security-Sanitization build with full flags using Clang",
+      "cacheVariables": {
+        "SANITIZE_MODE": "security"
+      }
+    },
+
+
+
+
+
+    {
+      "name": "gccSanitizeThread",
+      "hidden": false,
+      "inherits":["Sanitize", "gcc"],
+      "displayName": "GCC Sanitize Config",
+      "description": "Debug Thread-Sanitization build with full flags using GCC",
+      "cacheVariables": {
+        "SANITIZE_MODE": "thread-safety"
+      }
+    },
+    {
+      "name": "gccSanitizeMemory",
+      "hidden": false,
+      "inherits":["Sanitize", "gcc"],
+      "displayName": "GCC Sanitize Config",
+      "description": "Debug Memory-Sanitization build with full flags using GCC",
+      "cacheVariables": {
+        "SANITIZE_MODE": "memory-safety"
+      }
+    },
+    {
+      "name": "gccSanitizeSecurity",
+      "hidden": false,
+      "inherits":["Sanitize", "gcc"],
+      "displayName": "GCC Sanitize Config",
+      "description": "Debug Security-Sanitization build with full flags using GCC",
+      "cacheVariables": {
+        "SANITIZE_MODE": "security"
+      }
+    }
+
+
+
+
+
+  ]
+}

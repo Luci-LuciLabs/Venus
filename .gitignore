@@ -1,6 +1,5 @@
 .vscode/*
-.venus/*
+.cache/*
 build/*
-.documentation/*
-.dev/*
-resources/*
+documentation/.ignore/*
+documentation/doxy/gen/*
